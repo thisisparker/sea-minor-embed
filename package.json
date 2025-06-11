@@ -12,6 +12,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "@stellarogs/tonejs-instruments": "^1.0.0",
     "scribbletune": "^5.1.0",
     "tone": "^15.1.22"
   }
