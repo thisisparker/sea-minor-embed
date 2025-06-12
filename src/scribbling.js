@@ -40,9 +40,9 @@ const tambourineSynth = new Tone.MetalSynth({
         type: "sine",
     },
     envelope: {
-        attack: 0.1,
+        attack: 0.01,
         decay: 1.5,
-        sustain: .2,
+        sustain: 1,
         release: 1.6,
     },
     detune: 2,
@@ -69,7 +69,7 @@ const drumChannel = sesh.createChannel({
 const bassChannel = sesh.createChannel({
     instrument: bassSynth,
     name: "bass",
-    clips: [{ pattern: "[xx-]".repeat(8), subdiv: "2n", notes: "D2" }],
+    clips: [{ pattern: "[xx-]".repeat(7) + "[xxx]", subdiv: "2n", notes: "D2 ".repeat(14) + "D2 C2 C2" }],
 });
 const tambourineChannel = sesh.createChannel({
     instrument: tambourineSynth,
