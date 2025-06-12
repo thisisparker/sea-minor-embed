@@ -36,26 +36,29 @@ const bassSynth = new Tone.Synth({
 });
 
 const tambourineSynth = new Tone.MetalSynth({
-    oscillator: {
-        type: "FMOscillator",
-        partials: [0.2, 1, 0, 0.5, 0.1],
-        spread: 40,
-        count: 3,
-    },
+    frequency: 600,
     envelope: {
-        attack: 0.01,
-        decay: 2,
-        sustain: 1,
-        release: 1.6,
+      attack: 0.001,
+      decay: 1.0,
+      release: 0.5
     },
-    detune: 2,
-    volume: -10,
-});
+    harmonicity: 5.1,
+    modulationIndex: 32,
+    resonance: 4000,
+    octaves: 1.5,
+    volume: -10
+  });
 
 const freeverb = new Tone.Freeverb().toDestination();
 freeverb.dampening = 200;
 
-tambourineSynth.connect(freeverb);
+const reverb = new Tone.Reverb({
+    decay: 0.8,
+    preDelay: 0.01,
+    wet: 1.0
+  }).toDestination();
+
+tambourineSynth.connect(reverb);
 steelPanSynth.connect(freeverb);
 
 const sesh = new Scribble.Session();
