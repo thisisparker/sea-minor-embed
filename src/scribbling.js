@@ -47,7 +47,7 @@ function createNewSession() {
         modulationIndex: 32,
         resonance: 4000,
         octaves: 1.5,
-        volume: -10,
+        volume: -20,
     });
 
     const freeverb = new Tone.Freeverb().toDestination();
