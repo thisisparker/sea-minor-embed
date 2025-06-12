@@ -5,8 +5,8 @@ import * as Scribble from "scribbletune/browser";
 window.Tone = Tone;
 
 // Set up transport and synth definitions, but DO NOT start audio yet.
-Tone.getTransport().bpm.value = 120;
-Tone.getTransport().swing = 0.1;
+Tone.getTransport().bpm.value = 60;
+Tone.getTransport().swing = 0.05;
 
 const steelPanSynth = new Tone.Synth({
     oscillator: {
@@ -37,11 +37,14 @@ const bassSynth = new Tone.Synth({
 
 const tambourineSynth = new Tone.MetalSynth({
     oscillator: {
-        type: "sine",
+        type: "FMOscillator",
+        partials: [0.2, 1, 0, 0.5, 0.1],
+        spread: 40,
+        count: 3,
     },
     envelope: {
         attack: 0.01,
-        decay: 1.5,
+        decay: 2,
         sustain: 1,
         release: 1.6,
     },
@@ -64,17 +67,17 @@ const melodyChannel = sesh.createChannel({
 const drumChannel = sesh.createChannel({
     instrument: "MembraneSynth",
     name: "drums",
-    clips: [{ pattern: "[x--][x--][x--][x-x]", subdiv: "2n", notes: "D1" }],
+    clips: [{ pattern: "[x--][x--][x--][x-x]", subdiv: "4n", notes: "D1" }],
 });
 const bassChannel = sesh.createChannel({
     instrument: bassSynth,
     name: "bass",
-    clips: [{ pattern: "[xx-]".repeat(7) + "[xxx]", subdiv: "2n", notes: "D2 ".repeat(14) + "D2 C2 C2" }],
+    clips: [{ pattern: "[xx-]".repeat(7) + "[xxx]", subdiv: "4n", notes: "D2 ".repeat(14) + "D2 C2 C2" }],
 });
 const tambourineChannel = sesh.createChannel({
     instrument: tambourineSynth,
     name: "tambourine",
-    clips: [{ pattern: "[x__][x__][x__][x_x]", subdiv: "2n", notes: "G6" }],
+    clips: [{ pattern: "[x__]".repeat(3) + "[x_x]" + "[x__]".repeat(3) + "[xxx]", subdiv: "4n", notes: "G6" }],
 });
 
 
@@ -91,7 +94,7 @@ async function startNewMelodyLoop() {
             pattern: "[xxx][R-x][RRR][R-x][xxx][R-x][RRR][x__]",
             notes: "D4 D4 D4 G4 C4 D4 F4 D4 G4 D4",
             randomNotes: Scribble.scale("D4 dorian").filter((note) => note !== "B4"),
-            subdiv: "2n",
+            subdiv: "4n",
             sizzle: true,
         },
         0
@@ -133,7 +136,7 @@ function addMelodyButtons() {
         bassChannel.addClip({
             pattern: "[xxx]".repeat(8),
             notes: arpeggiated,
-            subdiv: "2n",
+            subdiv: "4n",
         });
 
         bassChannel.startClip(bassChannel.clips.length - 1);
