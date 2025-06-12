@@ -35,9 +35,23 @@ const bassSynth = new Tone.Synth({
     },
 });
 
+const tambourineSynth = new Tone.MetalSynth({
+    oscillator: {
+        type: "sine",
+    },
+    envelope: {
+        attack: 0.1,
+        decay: 1.2,
+        sustain: .2,
+        release: 1.6,
+    },
+    volume: -10,
+});
+
 const freeverb = new Tone.Freeverb().toDestination();
 freeverb.dampening = 200;
 
+tambourineSynth.connect(freeverb);
 steelPanSynth.connect(freeverb);
 
 const sesh = new Scribble.Session();
@@ -56,6 +70,12 @@ const bassChannel = sesh.createChannel({
     name: "bass",
     clips: [{ pattern: "[xx-]".repeat(8), subdiv: "2n", notes: "D2" }],
 });
+const tambourineChannel = sesh.createChannel({
+    instrument: tambourineSynth,
+    name: "tambourine",
+    clips: [{ pattern: "[x__][x__][x__][x_x]", subdiv: "2n", notes: "G6" }],
+});
+
 
 async function startNewMelodyLoop() {
     // Start the AudioContext on the first user gesture
