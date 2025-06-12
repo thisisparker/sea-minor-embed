@@ -41,10 +41,11 @@ const tambourineSynth = new Tone.MetalSynth({
     },
     envelope: {
         attack: 0.1,
-        decay: 1.2,
+        decay: 1.5,
         sustain: .2,
         release: 1.6,
     },
+    detune: 2,
     volume: -10,
 });
 
