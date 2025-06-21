@@ -50,6 +50,31 @@ function createNewSession() {
         volume: -20,
     });
 
+    const whistleSynth = new Tone.MonoSynth({
+        oscillator: {
+          type: "sine"
+        },
+        filter: {
+          Q: 3,
+          type: "lowpass",
+          rolloff: -12
+        },
+        envelope: {
+          attack: 0.01,
+          decay: 0.2,
+          sustain: 0.5,
+          release: 0.3
+        },
+        filterEnvelope: {
+          attack: 0.01,
+          decay: 0.1,
+          sustain: 0.4,
+          release: 0.2,
+          baseFrequency: 800,
+          octaves: 1.5
+        }
+    });
+
     const freeverb = new Tone.Freeverb().toDestination();
     freeverb.dampening = 200;
 
