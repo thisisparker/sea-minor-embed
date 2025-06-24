@@ -135,10 +135,7 @@ function createNewSession() {
     return sesh;
 }
 
-async function startNewMelodyLoop(session) {
-    console.log("starting new melody loop");
-    session.startRow(0);
-}
+
 
 function createControls(session) {
     const app = document.querySelector("#app");
@@ -148,28 +145,12 @@ function createControls(session) {
     const containerDiv = document.createElement("div");
     containerDiv.classList.add("controls");
     app.appendChild(containerDiv);
-    const playPauseButton = document.createElement("button");
-    playPauseButton.textContent = "play";
-    playPauseButton.addEventListener("click", async () => {
-        // Start AudioContext if it's not running
-        if (Tone.getContext().state !== "running") {
-            await Tone.start();
-            console.log("AudioContext started successfully by user gesture.");
-        }
-
-        // Toggle transport state
-        if (Tone.getTransport().state === "started") {
-            Tone.getTransport().pause();
-            playPauseButton.textContent = "play";
-        } else {
-            Tone.getTransport().start();
-            startNewMelodyLoop(session);
-            playPauseButton.textContent = "pause";
-        }
-    });
-    containerDiv.appendChild(playPauseButton);
 
     console.log(session.channels);
+
+    const channelControls = document.createElement("div");
+    channelControls.classList.add("channel-controls");
+    app.appendChild(channelControls);
 
     session.channels.forEach((channel) => {
         const checkboxContainer = document.createElement("div");
@@ -194,8 +175,41 @@ function createControls(session) {
 
         checkboxContainer.appendChild(checkbox);
         checkboxContainer.appendChild(label);
-        containerDiv.appendChild(checkboxContainer);
+        channelControls.appendChild(checkboxContainer);
     });
+
+    const playPauseContainer = document.createElement("div");
+    playPauseContainer.classList.add("play-pause-container");
+    containerDiv.appendChild(playPauseContainer);
+
+    const playPauseButton = document.createElement("button");
+    playPauseButton.textContent = "play";
+    playPauseButton.addEventListener("click", async () => {
+        // Start AudioContext if it's not running
+        if (Tone.getContext().state !== "running") {
+            await Tone.start();
+            console.log("AudioContext started successfully by user gesture.");
+        }
+
+        // Toggle transport state
+        if (Tone.getTransport().state === "started") {
+            Tone.getTransport().pause();
+            playPauseButton.textContent = "play";
+        } else {
+            Tone.getTransport().start();
+            session.channels.forEach((channel) => {
+                const checkbox = document.querySelector(
+                    `#${channel.name}-checkbox`
+                );
+                if (checkbox.checked) {
+                    channel.startClip(0);
+                }
+            });
+            playPauseButton.textContent = "pause";
+        }
+    });
+    containerDiv.appendChild(channelControls);
+    playPauseContainer.appendChild(playPauseButton);
 }
 
 const session = createNewSession();

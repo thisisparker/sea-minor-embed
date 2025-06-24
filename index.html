@@ -8,10 +8,24 @@
   </head>
   <body>
     <style>
-      .controls {
+      #app {
+        max-width: 450px;
+      }
+      .play-pause-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+      .play-pause-container button {
+        width: 100%;
+      }
+      .channel-controls {
         display: flex;
         flex-direction: row;
         gap: 10px;
+        justify-content: space-between;
       }
     </style>
     <div id="app"></div>
